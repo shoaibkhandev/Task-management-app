@@ -8,7 +8,7 @@
     </v-icon>
     <v-icon class="mr-4" @click="editTask"> mdi-pencil </v-icon>
     <v-icon class="mr-4" @click="deleteTask"> mdi-delete-forever </v-icon>
-    <v-icon @click="openDetails"> mdi-arrow-right-top-bold </v-icon>
+    <v-icon @click="openDetails"> mdi-eye </v-icon>
   </div>
 </template>
 

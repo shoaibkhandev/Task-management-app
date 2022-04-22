@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { LABELS_COLORS } from "../utils/constants";
 export default {
   props: {
     labels: {
@@ -22,7 +23,7 @@ export default {
   },
   data() {
     return {
-      colors: ["primary", "blue", "green", "red", "yellow", "orange"],
+      colors: LABELS_COLORS,
     };
   },
 };

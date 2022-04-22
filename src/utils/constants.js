@@ -6,18 +6,11 @@ export const DUMMY_BOARDS = [
 ]
 
 export const STAGES = [
-    {
-        id: 1,
-        name: 'Pending',
-    },
-    {
-        id: 2,
-        name: 'Processing',
-    },
-    {
-        id: 3,
-        name: 'Done',
-    }
+    { id: 1, name: 'Pending' },
+    { id: 2, name: 'Processing' },
+    { id: 3, name: 'Done' }
 ]
 
 export const CHIP_LABELS = ['Important', 'Bug', 'Task', 'Story', 'New', 'In Progress', 'Done']
+
+export const LABELS_COLORS = ["primary", "blue", "green", "red", "yellow", "orange"]

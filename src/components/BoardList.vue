@@ -1,5 +1,5 @@
 <template>
-  <v-col sm="4">
+  <v-col cols="12" md="4">
     <v-card outlined max-height="600px" class="overflow-auto">
       <div class="px-3 pt-5">
         <h1 class="title text-center mb-2">

@@ -14,13 +14,13 @@
       <v-icon left> mdi-plus </v-icon>
       Add Task
     </v-btn>
-    <FormModal :dialog.sync="dialog" />
+    <NewTaskModal :dialog.sync="dialog" />
   </div>
 </template>
 
 <script>
 const components = {
-  FormModal: () => import("@/components/FormModal.vue"),
+  NewTaskModal: () => import("@/components/NewTaskModal.vue"),
   FilterNavigation: () => import("@/components/FilterNavigation.vue"),
 };
 export default {
