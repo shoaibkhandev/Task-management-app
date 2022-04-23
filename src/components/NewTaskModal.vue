@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <v-dialog :value="dialog" persistent max-width="600px">
+    <v-dialog :value="dialog" persistent max-width="800px">
       <v-form ref="form" @submit.prevent="submit">
         <v-card>
           <v-card-title>
@@ -70,11 +70,32 @@
                   </v-menu>
                 </v-col>
 
-                {{ formData.estTime }}
+                <v-col
+                  cols="4"
+                  v-for="(attachement, index) in attachements"
+                  :key="`attachement-${index}`"
+                >
+                  <v-card>
+                    <v-img height="150px" :src="attachement.src"></v-img>
+                    <div class="d-flex justify-space-between align-center pa-2">
+                      <div class="text-center text-subtitle-1">
+                        {{ attachement.name }}
+                      </div>
+                      <v-icon
+                        @click="removeAttachement(index)"
+                        color="red darken-2"
+                      >
+                        mdi-delete-forever
+                      </v-icon>
+                    </div>
+                  </v-card>
+                </v-col>
 
                 <v-col cols="12">
                   <v-file-input
                     v-model="formData.attachements"
+                    accept="image/*"
+                    @change="previewImages"
                     chips
                     counter
                     multiple
@@ -119,6 +140,7 @@ export default {
         labels: [],
         attachements: [],
       },
+      attachements: [],
       datePicker: false,
       valid: true,
       titleRules: [(v) => !!v || "title is required"],
@@ -140,6 +162,18 @@ export default {
     closeModal() {
       this.$refs.form.reset();
       this.$emit("update:dialog", false);
+    },
+    removeAttachement(index) {
+      this.formData.attachements.splice(index, 1);
+      this.attachements.splice(index, 1);
+    },
+    previewImages() {
+      this.attachements = this.formData.attachements.map((file) => {
+        return {
+          src: URL.createObjectURL(file),
+          name: file.name,
+        };
+      });
     },
   },
 };

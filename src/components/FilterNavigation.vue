@@ -109,7 +109,7 @@ export default {
         { name: "Label", slug: "label" },
       ],
       startTimeRules: [(v) => !!v || "Start time is required"],
-      endTimeRules: [(v) => !!v || "End timee is required"],
+      endTimeRules: [(v) => !!v || "End time is required"],
       searchRules: [(v) => !!v || "search is required"],
     };
   },

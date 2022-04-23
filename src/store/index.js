@@ -9,7 +9,8 @@ export default new Vuex.Store({
     tasks: DUMMY_BOARDS,
     stages: STAGES,
     chipLabels: CHIP_LABELS,
-    taskDetailsModal: false
+    taskDetailsModal: false,
+    attachementsModal: false
   },
   getters: {
     NoOfPendingTasks(state) {
@@ -38,6 +39,9 @@ export default new Vuex.Store({
     },
     TOGGLE_TASK_DETAILS_MODAL(state, bool) {
       state.taskDetailsModal = bool
+    },
+    TOGGLE_ATTACHEMENTS_MODAL(state, bool) {
+      state.attachementsModal = bool
     }
   },
   actions: {

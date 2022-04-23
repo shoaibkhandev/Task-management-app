@@ -39,7 +39,14 @@
             <label class="caption grey--text">Attachements:</label>
             <p>{{ task.attachements.length }}</p>
 
-            <p class="blue--text text--darken-3">View Attachements</p>
+            <p @click="showAttachements" class="blue--text text--darken-3">
+              View Attachements
+            </p>
+
+            <TaskAttachementsModal
+              class="mb-4"
+              :attachements="task.attachements"
+            />
           </div>
           <Labels v-if="task.labels.length" :labels="task.labels" />
         </div>
@@ -52,6 +59,7 @@
 const components = {
   Controls: () => import("@/components/BoardListItemControls.vue"),
   Labels: () => import("@/components/TaskLabels.vue"),
+  TaskAttachementsModal: () => import("@/components/TaskAttachementsModal.vue"),
 };
 export default {
   components,
@@ -90,6 +98,9 @@ export default {
     },
     changeOrder(tasks) {
       this.$store.commit("UPDATE_TASKS", tasks);
+    },
+    showAttachements() {
+      this.$store.commit("TOGGLE_ATTACHEMENTS_MODAL", true);
     },
   },
 };

@@ -11,8 +11,11 @@
         @submit.prevent="submit"
       >
         <v-card>
-          <v-card-title>
+          <v-card-title class="d-flex justify-space-between align-center">
             <span class="text-h5">View/Edit Task</span>
+            <v-icon large @click="deleteTask" color="red darken-2">
+              mdi-delete-forever
+            </v-icon>
           </v-card-title>
           <v-card-text>
             <v-container>
@@ -45,7 +48,10 @@
                   <label class="caption grey--text">Attachements:</label>
                   <p>{{ formData.attachements.length }}</p>
 
-                  <p class="blue--text text--darken-3 mb-0">
+                  <p
+                    @click="showAttachements"
+                    class="blue--text text--darken-3 mb-0"
+                  >
                     View Attachements
                   </p>
                 </v-col>
@@ -54,9 +60,15 @@
                   <Labels :labels="formData.labels" />
                 </v-col>
 
+                <TaskAttachementsModal
+                  class="mb-4"
+                  :attachements="formData.attachements"
+                />
+
                 <v-col cols="12">
                   <v-file-input
-                    v-model="formData.attachements"
+                    v-model="formData.newAttachements"
+                    accept="image/*"
                     chips
                     counter
                     multiple
@@ -85,6 +97,7 @@
 <script>
 const components = {
   Labels: () => import("@/components/TaskLabels.vue"),
+  TaskAttachementsModal: () => import("@/components/TaskAttachementsModal.vue"),
 };
 export default {
   components,
@@ -97,9 +110,9 @@ export default {
         estTime: null,
         labels: [],
         attachements: [],
+        newAttachements: [],
       },
       datePicker: false,
-      valid: true,
       titleRules: [(v) => !!v || "title is required"],
       descriptionRules: [(v) => !!v || "description is required"],
     };
@@ -123,13 +136,28 @@ export default {
     submit() {
       if (!this.$refs.form.validate()) return;
 
+      const params = {
+        ...this.formData,
+        attachements: [
+          ...this.formData.attachements,
+          ...this.formData.newAttachements,
+        ],
+        newAttachements: [],
+      };
       const tasks = this.$store.state.tasks.map((task) => {
-        if (task.id == this.$route.query.taskId) return { ...this.formData };
+        if (task.id == this.$route.query.taskId) return { ...params };
         else return task;
       });
 
       this.$store.commit("UPDATE_TASKS", tasks);
 
+      this.closeModal();
+    },
+    showAttachements() {
+      this.$store.commit("TOGGLE_ATTACHEMENTS_MODAL", true);
+    },
+    deleteTask() {
+      this.$store.dispatch("deleteTask", this.formData.id);
       this.closeModal();
     },
     closeModal() {
