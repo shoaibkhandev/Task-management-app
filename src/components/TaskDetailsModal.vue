@@ -139,8 +139,8 @@ export default {
       const params = {
         ...this.formData,
         attachements: [
-          ...this.formData.attachements,
-          ...this.formData.newAttachements,
+          ...(this.formData.attachements || []),
+          ...(this.formData.newAttachements || []),
         ],
         newAttachements: [],
       };

@@ -62,6 +62,35 @@ export default new Vuex.Store({
         else return task;
       });
       commit('UPDATE_TASKS', tasks)
+    },
+    tasksFilters({ state, commit }, filter) {
+      const { field, search, startTime, endTime } = filter
+      let tasks = []
+
+      switch (field) {
+        case 'title': {
+          tasks = state.tasks.filter(task => task.title.toLowerCase().includes(search.toLowerCase()))
+          break;
+        }
+        case 'description': {
+          tasks = state.tasks.filter(task => task.description.toLowerCase().includes(search.toLowerCase()))
+          break;
+        }
+        case 'label': {
+          tasks = state.tasks.filter(task => task.labels.map(item => item.toLocaleLowerCase()).includes(search.toLowerCase()))
+          break;
+        }
+      }
+      const [startHours, startMinutes] = startTime.split(':')
+      const [endHours, endMinutes] = endTime.split(':')
+
+      tasks = tasks.filter(task => {
+        const [hours, minutes] = task.estTime.split(':')
+        if (hours >= startHours && minutes >= startMinutes && hours <= endHours && minutes <= endMinutes) return true
+        else return false
+      })
+
+      commit('UPDATE_TASKS', tasks)
     }
   },
   modules: {

@@ -29,7 +29,7 @@
           </div>
           <div>
             <label class="caption grey--text">Description:</label>
-            <p>{{ task.description }}</p>
+            <p>{{ task.description | descTruncated }}</p>
           </div>
           <div>
             <label class="caption grey--text">Estimated Time:</label>

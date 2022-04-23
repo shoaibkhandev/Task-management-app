@@ -8,7 +8,7 @@
     <v-divider></v-divider>
     <v-form ref="form" class="ma-3" style="height: calc(100vh - 140px)">
       <v-select
-        v-model="field"
+        v-model="filters.field"
         item-text="name"
         item-value="slug"
         :items="items"
@@ -16,7 +16,7 @@
       ></v-select>
 
       <v-text-field
-        v-model="search"
+        v-model="filters.search"
         :rules="searchRules"
         label="Search for task*"
         clearable
@@ -32,7 +32,7 @@
       >
         <template v-slot:activator="{ on, attrs }">
           <v-text-field
-            v-model="startTime"
+            v-model="filters.startTime"
             label="Start Time*"
             prepend-icon="mdi-calendar"
             readonly
@@ -42,8 +42,8 @@
           ></v-text-field>
         </template>
         <v-time-picker
-          v-model="startTime"
-          :max="endTime"
+          v-model="filters.startTime"
+          :max="filters.endTime"
           format="ampm"
           @input="startTimePicker = false"
         ></v-time-picker>
@@ -59,7 +59,7 @@
       >
         <template v-slot:activator="{ on, attrs }">
           <v-text-field
-            v-model="endTime"
+            v-model="filters.endTime"
             label="End Time*"
             prepend-icon="mdi-calendar"
             readonly
@@ -69,8 +69,8 @@
           ></v-text-field>
         </template>
         <v-time-picker
-          v-model="endTime"
-          :min="startTime"
+          v-model="filters.endTime"
+          :min="filters.startTime"
           format="ampm"
           @input="endTimePicker = false"
         ></v-time-picker>
@@ -79,8 +79,8 @@
     <v-divider></v-divider>
 
     <v-col cols="12" class="d-flex justify-space-between" style="height: 50px">
-      <v-btn color="primary" text>Apply</v-btn>
-      <v-btn color="red darken-1" text @click="submit"> Reset </v-btn>
+      <v-btn color="primary" @click="submit" text>Apply</v-btn>
+      <v-btn color="red darken-1" text> Reset </v-btn>
     </v-col>
   </v-navigation-drawer>
 </template>
@@ -96,13 +96,14 @@ export default {
   },
   data() {
     return {
+      filters: {
+        field: "title",
+        search: null,
+        startTime: null,
+        endTime: null,
+      },
       endTimePicker: false,
       startTimePicker: false,
-      startTime: null,
-      endTime: null,
-      search: null,
-      date: null,
-      field: "title",
       items: [
         { name: "Title", slug: "title" },
         { name: "Description", slug: "description" },
@@ -116,7 +117,8 @@ export default {
   methods: {
     submit() {
       if (!this.$refs.form.validate()) return;
-      console.log("Form submitted!");
+      this.$store.dispatch("tasksFilters", this.filters);
+      this.closeModal();
     },
     closeModal() {
       this.$refs.form.reset();

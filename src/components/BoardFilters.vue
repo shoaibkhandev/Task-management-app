@@ -9,7 +9,7 @@
       <v-icon left> mdi-feature-search-outline </v-icon>
       Search & Filter
     </v-btn>
-    <FilterNavigation :sidebar.sync="sidebar" />
+    <FilterNavigationDrawer :sidebar.sync="sidebar" />
     <v-btn @click="dialog = true" color="blue darken-3" outlined>
       <v-icon left> mdi-plus </v-icon>
       Add Task
@@ -21,7 +21,7 @@
 <script>
 const components = {
   NewTaskModal: () => import("@/components/NewTaskModal.vue"),
-  FilterNavigation: () => import("@/components/FilterNavigation.vue"),
+  FilterNavigationDrawer: () => import("@/components/FilterNavigationDrawer.vue"),
 };
 export default {
   components,
