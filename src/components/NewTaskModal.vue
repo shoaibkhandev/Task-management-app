@@ -39,6 +39,7 @@
                     v-model="formData.labels"
                     :items="$store.state.chipLabels"
                     label="Lables"
+                    chips
                     multiple
                   ></v-autocomplete>
                 </v-col>

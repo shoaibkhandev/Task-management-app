@@ -29,7 +29,7 @@
           </div>
           <div>
             <label class="caption grey--text">Description:</label>
-            <p>{{ task.description | descTruncated }}</p>
+            <p>{{ task.description | truncatedDescription }}</p>
           </div>
           <div>
             <label class="caption grey--text">Estimated Time:</label>
@@ -85,18 +85,29 @@ export default {
     },
   },
   methods: {
-    pickupTask(e, fromId) {
-      e.dataTransfer.setData("fromId", fromId);
+    pickupTask(e, moveTaskId) {
+      e.dataTransfer.setData("moveTaskId", moveTaskId);
     },
-    moveTask(e, toId) {
-      const fromId = e.dataTransfer.getData("fromId");
+    moveTask(e, taskId) {
+      const moveTaskId = Number(e.dataTransfer.getData("moveTaskId"));
       let tasks = [...this.$store.state.tasks];
-      const fromIndex = tasks.findIndex((task) => task.id === Number(fromId));
-      const toIndex = tasks.findIndex((task) => task.id === Number(toId));
-      [tasks[fromIndex], tasks[toIndex]] = [tasks[toIndex], tasks[fromIndex]];
-      this.changeOrder(tasks);
-    },
-    changeOrder(tasks) {
+      const sourceIndex = tasks.findIndex((task) => task.id === moveTaskId);
+      const destinationIndex = tasks.findIndex((task) => task.id === taskId);
+
+      if (tasks[sourceIndex].stage !== tasks[destinationIndex].stage) {
+        const [sourceTask] = tasks.splice(sourceIndex, 1);
+        const destinationIndex = tasks.findIndex((task) => task.id === taskId);
+        sourceTask.stage = tasks[destinationIndex].stage;
+        tasks.splice(destinationIndex, 0, sourceTask);
+        this.$store.commit("UPDATE_TASKS", tasks);
+        return;
+      }
+
+      [tasks[sourceIndex], tasks[destinationIndex]] = [
+        tasks[destinationIndex],
+        tasks[sourceIndex],
+      ];
+
       this.$store.commit("UPDATE_TASKS", tasks);
     },
     showAttachements() {

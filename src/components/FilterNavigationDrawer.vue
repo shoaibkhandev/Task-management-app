@@ -80,7 +80,7 @@
 
     <v-col cols="12" class="d-flex justify-space-between" style="height: 50px">
       <v-btn color="primary" @click="submit" text>Apply</v-btn>
-      <v-btn color="red darken-1" text> Reset </v-btn>
+      <v-btn color="red darken-1" @click="closeModal" text> Cancel </v-btn>
     </v-col>
   </v-navigation-drawer>
 </template>

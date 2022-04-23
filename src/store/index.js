@@ -1,25 +1,26 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { DUMMY_BOARDS, STAGES, CHIP_LABELS } from "../utils/constants";
+import { tasks, chipLabels } from "../inputs";
+import { STAGES } from "../utils/constants";
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    tasks: DUMMY_BOARDS,
+    tasks,
     stages: STAGES,
-    chipLabels: CHIP_LABELS,
+    chipLabels,
     taskDetailsModal: false,
     attachementsModal: false
   },
   getters: {
-    NoOfPendingTasks(state) {
+    noOfPendingTasks(state) {
       return state.tasks.filter(task => task.stage === 1).length
     },
-    NoOfProcessingTasks(state) {
+    noOfProcessingTasks(state) {
       return state.tasks.filter(task => task.stage === 2).length
     },
-    NoOfDoneTasks(state) {
+    noOfDoneTasks(state) {
       return state.tasks.filter(task => task.stage === 3).length
     },
     totalTasks(state) {
@@ -27,7 +28,7 @@ export default new Vuex.Store({
     },
     percentageOfDoneTasks(_, getters) {
       if (!getters.totalTasks) return 0
-      return Math.round((getters.NoOfDoneTasks / getters.totalTasks) * 100)
+      return Math.round((getters.noOfDoneTasks / getters.totalTasks) * 100)
     },
   },
   mutations: {
@@ -51,44 +52,43 @@ export default new Vuex.Store({
     },
     forwardTask({ state, commit }, taskId) {
       const tasks = state.tasks.map((task) => {
-        if (task.id == taskId) return { ...task, stage: task.stage == 3 ? 3 : task.stage + 1 };
+        if (task.id == taskId) return { ...task, stage: Math.min(task.stage + 1, 3) };
         else return task;
       });
       commit('UPDATE_TASKS', tasks)
     },
     backwardTask({ state, commit }, taskId) {
       const tasks = state.tasks.map((task) => {
-        if (task.id == taskId) return { ...task, stage: task.stage == 1 ? 1 : task.stage - 1 };
+        if (task.id == taskId) return { ...task, stage: Math.max(task.stage - 1, 1) };
         else return task;
       });
       commit('UPDATE_TASKS', tasks)
     },
     tasksFilters({ state, commit }, filter) {
       const { field, search, startTime, endTime } = filter
-      let tasks = []
 
-      switch (field) {
-        case 'title': {
-          tasks = state.tasks.filter(task => task.title.toLowerCase().includes(search.toLowerCase()))
-          break;
-        }
-        case 'description': {
-          tasks = state.tasks.filter(task => task.description.toLowerCase().includes(search.toLowerCase()))
-          break;
-        }
-        case 'label': {
-          tasks = state.tasks.filter(task => task.labels.map(item => item.toLocaleLowerCase()).includes(search.toLowerCase()))
-          break;
-        }
-      }
       const [startHours, startMinutes] = startTime.split(':')
       const [endHours, endMinutes] = endTime.split(':')
 
-      tasks = tasks.filter(task => {
+      let tasks = state.tasks.filter(task => {
         const [hours, minutes] = task.estTime.split(':')
-        if (hours >= startHours && minutes >= startMinutes && hours <= endHours && minutes <= endMinutes) return true
-        else return false
+        return (hours >= startHours && hours <= endHours && minutes >= startMinutes && minutes <= endMinutes)
       })
+
+      switch (field) {
+        case 'title': {
+          tasks = tasks.filter(task => task.title.toLowerCase().includes(search.toLowerCase()))
+          break;
+        }
+        case 'description': {
+          tasks = tasks.filter(task => task.description.toLowerCase().includes(search.toLowerCase()))
+          break;
+        }
+        case 'label': {
+          tasks = tasks.filter(task => task.labels.some(item => item.toLocaleLowerCase().includes(search.toLowerCase())))
+          break;
+        }
+      }
 
       commit('UPDATE_TASKS', tasks)
     }

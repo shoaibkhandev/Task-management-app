@@ -9,7 +9,7 @@
         rounded
       >
         <strong
-          >{{ percentageOfDoneTasks }} % Done {{ NoOfDoneTasks }} out of
+          >{{ percentageOfDoneTasks }} % Done {{ noOfDoneTasks }} out of
           {{ totalTasks }}</strong
         >
       </v-progress-linear>
