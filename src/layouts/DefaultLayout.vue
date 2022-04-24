@@ -15,12 +15,12 @@
 </template>
 
 <script>
-const defaultLayout = "default";
+const defaultLayout = "DefaultLayout";
 export default {
-  name: "default",
+  name: "DefaultLayout",
   computed: {
     layout() {
-      const layout = this.$route.meta.layout || defaultLayout;
+      const layout = this.$route?.meta?.layout || defaultLayout;
       return () => import(`@/layouts/${layout}.vue`);
     },
   },

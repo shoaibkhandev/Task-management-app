@@ -52,7 +52,7 @@ export default new Vuex.Store({
     },
     forwardTask({ state, commit }, taskId) {
       const tasks = state.tasks.map((task) => {
-        if (task.id == taskId) return { ...task, stage: Math.min(task.stage + 1, 3) };
+        if (task.id == taskId) return { ...task, stage: Math.min(task.stage + 1, state.stages.length) };
         else return task;
       });
       commit('UPDATE_TASKS', tasks)

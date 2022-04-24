@@ -77,6 +77,43 @@
                     truncate-length="15"
                   ></v-file-input>
                 </v-col>
+
+                <v-col cols="12">
+                  <v-text-field
+                    v-model="comment"
+                    placeholder="Enter your comments"
+                  >
+                    <v-icon
+                      @click="addComment"
+                      v-if="comment"
+                      class="cursor-pointer"
+                      slot="append"
+                      color="primary"
+                    >
+                      mdi-arrow-right-thin-circle-outline
+                    </v-icon>
+                    <v-icon slot="prepend">
+                      mdi-comment-multiple-outline
+                    </v-icon>
+                  </v-text-field>
+                </v-col>
+
+                <v-col
+                  cols="12"
+                  v-if="formData.comments && formData.comments.length"
+                >
+                  <label class="caption grey--text"
+                    >{{ formData.comments.length }} Comments:</label
+                  >
+                  <v-divider class="my-3"></v-divider>
+                  <v-card
+                    v-for="(comment, index) in formData.comments"
+                    :key="`comment-${index}`"
+                    class="pa-3 mb-2"
+                  >
+                    <p class="mb-0">{{ comment }}</p>
+                  </v-card>
+                </v-col>
               </v-row>
             </v-container>
             <small>*indicates required field</small>
@@ -109,9 +146,11 @@ export default {
         stage: null,
         estTime: null,
         labels: [],
+        comments: [],
         attachements: [],
         newAttachements: [],
       },
+      comment: null,
       datePicker: false,
       titleRules: [(v) => !!v || "title is required"],
       descriptionRules: [(v) => !!v || "description is required"],
@@ -152,6 +191,13 @@ export default {
       this.$store.commit("UPDATE_TASKS", tasks);
 
       this.closeModal();
+    },
+    addComment() {
+      this.formData.comments = [
+        ...(this.formData.comments || []),
+        this.comment,
+      ];
+      this.comment = null;
     },
     showAttachements() {
       this.$store.commit("TOGGLE_ATTACHEMENTS_MODAL", true);

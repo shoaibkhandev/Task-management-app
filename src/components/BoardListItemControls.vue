@@ -1,10 +1,14 @@
 <template>
   <div>
-    <v-icon v-if="task.stage !== 3" class="mr-4" @click="forwardTask">
-      mdi-clipboard-arrow-right
-    </v-icon>
-    <v-icon v-if="task.stage === 3" class="mr-4" @click="backwardTask">
+    <v-icon v-if="task.stage > 1" class="mr-4" @click="backwardTask">
       mdi-clipboard-arrow-left
+    </v-icon>
+    <v-icon
+      v-if="task.stage < $store.state.stages.length"
+      class="mr-4"
+      @click="forwardTask"
+    >
+      mdi-clipboard-arrow-right
     </v-icon>
     <v-icon class="mr-4" @click="editTask"> mdi-pencil </v-icon>
     <v-icon class="mr-4" @click="deleteTask"> mdi-delete-forever </v-icon>

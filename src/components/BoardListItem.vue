@@ -15,8 +15,6 @@
           "
           draggable
           @dragstart="pickupTask($event, task.id)"
-          @dragenter.prevent
-          @dragover.prevent
           @drop.stop="moveTask($event, task.id)"
         >
           <h1 class="subtitle-1 font-weight-bold">{{ task.title }}</h1>
@@ -39,7 +37,7 @@
             <label class="caption grey--text">Attachements:</label>
             <p>{{ task.attachements.length }}</p>
 
-            <p @click="showAttachements" class="blue--text text--darken-3">
+            <p @click="showAttachements" class="cursor-pointer blue--text text--darken-3">
               View Attachements
             </p>
 
@@ -90,6 +88,7 @@ export default {
     },
     moveTask(e, taskId) {
       const moveTaskId = Number(e.dataTransfer.getData("moveTaskId"));
+
       let tasks = [...this.$store.state.tasks];
       const sourceIndex = tasks.findIndex((task) => task.id === moveTaskId);
       const destinationIndex = tasks.findIndex((task) => task.id === taskId);
@@ -103,12 +102,9 @@ export default {
         return;
       }
 
-      [tasks[sourceIndex], tasks[destinationIndex]] = [
-        tasks[destinationIndex],
-        tasks[sourceIndex],
-      ];
-
+      [tasks[sourceIndex], tasks[destinationIndex]] = [tasks[destinationIndex],tasks[sourceIndex]];
       this.$store.commit("UPDATE_TASKS", tasks);
+
     },
     showAttachements() {
       this.$store.commit("TOGGLE_ATTACHEMENTS_MODAL", true);

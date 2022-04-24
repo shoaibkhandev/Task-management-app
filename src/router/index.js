@@ -8,35 +8,17 @@ const routes = [
   {
     path: '/',
     name: 'board',
-    component: () => import('../pages/board/index.vue')
+    component: () => import('../pages/board/index.vue'),
   },
   {
     path: '/error',
     name: 'error',
-    component: () => import(/* webpackChunkName: "notFound" */ '../pages/error/index.vue')
+    component: () => import('../pages/error/index.vue')
   },
-
   {
     path: '*',
     redirect: '/error'
   }
-  // {
-  //   path: '/login',
-  //   name: 'login',
-  //   component: () => import('../pages/login/index.vue'),
-  //   meta: {
-  //     layout: 'auth',
-  //     requiresAuth: false,
-  //   }
-  // },
-  // {
-  //   path: '/dashboard',
-  //   name: 'dashboard',
-  //   component: () => import('../pages/dashboard/index.vue'),
-  //   meta: {
-  //     requiresAuth: true,
-  //   }
-  // }
 ]
 
 const router = new VueRouter({

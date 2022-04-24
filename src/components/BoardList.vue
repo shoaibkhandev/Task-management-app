@@ -2,7 +2,6 @@
   <v-col cols="12" md="4">
     <v-card
       draggable="false"
-      @dragenter.prevent
       @dragover.prevent
       @drop.stop="moveTask($event)"
       outlined
@@ -63,10 +62,9 @@ export default {
   methods: {
     moveTask(e) {
       const moveTaskId = Number(e.dataTransfer.getData("moveTaskId"));
+      
       let tasks = [...this.$store.state.tasks];
-
       const sourceIndex = tasks.findIndex((task) => task.id === moveTaskId);
-
       tasks[sourceIndex].stage = this.id;
 
       this.$store.commit("UPDATE_TASKS", tasks);

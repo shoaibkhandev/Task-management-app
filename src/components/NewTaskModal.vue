@@ -72,7 +72,8 @@
                 </v-col>
 
                 <v-col
-                  cols="4"
+                  cols="12"
+                  sm="4"
                   v-for="(attachement, index) in attachements"
                   :key="`attachement-${index}`"
                 >
@@ -172,7 +173,7 @@ export default {
       this.attachements = this.formData.attachements.map((file) => {
         return {
           src: URL.createObjectURL(file),
-          name: file.name,
+          name: file.name.substring(0, 20),
         };
       });
     },

@@ -11,7 +11,8 @@
         </v-card-title>
         <v-row no-gutters>
           <v-col
-            cols="4"
+            cols="12"
+            sm="4"
             v-for="(image, index) in images"
             :key="`attachement-${index}`"
           >
@@ -44,7 +45,7 @@ export default {
       return this.attachements.map((attachement) => {
         return {
           src: URL.createObjectURL(attachement),
-          name: attachement.name,
+          name: attachement.name.substring(0, 20),
         };
       });
     },
